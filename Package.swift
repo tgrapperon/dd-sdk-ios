@@ -6,8 +6,8 @@ import Foundation
 let package = Package(
     name: "Datadog",
     platforms: [
-        .iOS(.v11),
-        .tvOS(.v11)
+        .iOS(.v13),
+        .tvOS(.v13)
     ],
     products: [
         .library(
@@ -31,6 +31,10 @@ let package = Package(
             targets: ["DatadogRUM"]
         ),
         .library(
+            name: "DatadogMetrics",
+            targets: ["DatadogMetrics"]
+        ),
+        .library(
             name: "DatadogSessionReplay",
             targets: ["DatadogSessionReplay"]
         ),
@@ -45,6 +49,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/microsoft/plcrashreporter.git", from: "1.11.1"),
+        .package(url: "https://github.com/open-telemetry/opentelemetry-swift", from: "1.0.0"),
+
     ],
     targets: [
         .target(
@@ -182,6 +188,23 @@ let package = Package(
                 .target(name: "TestUtilities"),
             ],
             path: "DatadogSessionReplay/Tests"
+        ),
+
+        .target(
+            name: "DatadogMetrics",
+            dependencies: [
+                .target(name: "DatadogInternal"),
+                .product(name: "OpenTelemetryApi", package: "opentelemetry-swift"),
+            ],
+            path: "DatadogMetrics/Sources"
+        ),
+        .testTarget(
+            name: "DatadogMetricsTests",
+            dependencies: [
+                .target(name: "DatadogMetrics"),
+                .target(name: "TestUtilities"),
+            ],
+            path: "DatadogMetrics/Tests"
         ),
 
         .target(
