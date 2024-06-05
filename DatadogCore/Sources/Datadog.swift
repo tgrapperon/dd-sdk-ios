@@ -492,6 +492,8 @@ public enum Datadog {
             verbosityLevel: { Datadog.verbosityLevel }
         )
 
+        registerObjcExceptionHandlerOnce()
+
         return core
     }
 
