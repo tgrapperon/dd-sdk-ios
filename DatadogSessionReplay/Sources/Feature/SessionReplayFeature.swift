@@ -40,7 +40,6 @@ internal class SessionReplayFeature: DatadogRemoteFeature {
         let recorder = try Recorder(
             snapshotProcessor: snapshotProcessor,
             resourceProcessor: resourceProcessor,
-            telemetry: core.telemetry,
             additionalNodeRecorders: configuration._additionalNodeRecorders
         )
         let scheduler = MainThreadScheduler(interval: 0.1)
@@ -59,7 +58,8 @@ internal class SessionReplayFeature: DatadogRemoteFeature {
             rumContextObserver: contextReceiver,
             srContextPublisher: SRContextPublisher(core: core),
             recorder: recorder,
-            sampler: Sampler(samplingRate: configuration.debugSDK ? 100 : configuration.replaySampleRate)
+            sampler: Sampler(samplingRate: configuration.debugSDK ? 100 : configuration.replaySampleRate),
+            telemetry: core.telemetry
         )
         self.requestBuilder = SegmentRequestBuilder(
             customUploadURL: configuration.customEndpoint,
