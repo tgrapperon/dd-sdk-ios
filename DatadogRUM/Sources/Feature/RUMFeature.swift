@@ -6,6 +6,7 @@
 
 import Foundation
 import DatadogInternal
+import UIKit
 
 internal final class RUMFeature: DatadogRemoteFeature {
     static let name = "rum"
@@ -82,6 +83,22 @@ internal final class RUMFeature: DatadogRemoteFeature {
             dateProvider: configuration.dateProvider
         )
 
+        let appStateManager = WatchdogTerminationAppStateManager(
+            dataStore: .init(featureScope: featureScope),
+            vendorIdProvider: UIDevice(),
+            featureScope: featureScope,
+            sysctl: Sysctl()
+        )
+        let watchdogTermination = WatchdogTerminationMonitor(
+            checker: .init(
+                appStateManager: appStateManager,
+                deviceInfo: .init()
+            ),
+            appStateManager: appStateManager,
+            reporter: WatchdogTerminationReporter(),
+            telemetry: featureScope.telemetry
+        )
+
         self.instrumentation = RUMInstrumentation(
             featureScope: featureScope,
             uiKitRUMViewsPredicate: configuration.uiKitViewsPredicate,
@@ -92,7 +109,8 @@ internal final class RUMFeature: DatadogRemoteFeature {
             dateProvider: configuration.dateProvider,
             backtraceReporter: core.backtraceReporter,
             fatalErrorContext: dependencies.fatalErrorContext,
-            processID: configuration.processID
+            processID: configuration.processID,
+            watchdogTermination: watchdogTermination
         )
         self.requestBuilder = RequestBuilder(
             customIntakeURL: configuration.customEndpoint,
@@ -134,7 +152,9 @@ internal final class RUMFeature: DatadogRemoteFeature {
                     }
                 }(),
                 eventsMapper: eventsMapper
-            )
+            ),
+            LaunchReportReceiver(featureScope: featureScope, watchdogTermination: watchdogTermination),
+            appStateManager
         )
 
         // Forward instrumentation calls to monitor:
@@ -165,6 +185,7 @@ extension RUMFeature: Flushable {
     /// **blocks the caller thread**
     func flush() {
         instrumentation.appHangs?.flush()
+        instrumentation.watchdogTermination?.flush()
     }
 }
 
