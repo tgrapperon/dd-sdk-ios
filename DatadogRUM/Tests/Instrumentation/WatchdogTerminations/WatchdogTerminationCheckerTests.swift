@@ -8,7 +8,6 @@ import XCTest
 import DatadogInternal
 @testable import DatadogRUM
 import TestUtilities
-import DatadogCore
 
 final class WatchdogTerminationCheckerTests: XCTestCase {
     // swiftlint:disable implicitly_unwrapped_optional
@@ -19,7 +18,6 @@ final class WatchdogTerminationCheckerTests: XCTestCase {
     var sysctl: SysctlMock!
     var deviceInfo: DeviceInfo!
     var appStateManager: WatchdogTerminationAppStateManager!
-    var appStatePublisher: ApplicationStatePublisher!
     // swiftlint:enable implicitly_unwrapped_optional
 
     func testNoPreviousState_NoWatchdogTermination() throws {

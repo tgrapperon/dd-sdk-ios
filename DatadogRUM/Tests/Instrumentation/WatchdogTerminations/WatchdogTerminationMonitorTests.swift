@@ -8,7 +8,6 @@ import XCTest
 import DatadogInternal
 @testable import DatadogRUM
 import TestUtilities
-import DatadogCore
 
 final class WatchdogTerminationMonitorTests: XCTestCase {
     // swiftlint:disable implicitly_unwrapped_optional
