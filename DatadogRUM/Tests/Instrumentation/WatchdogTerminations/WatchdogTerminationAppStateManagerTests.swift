@@ -24,9 +24,9 @@ final class WatchdogTerminationAppStateManagerTests: XCTestCase {
         dataStore = RUMDataStore(featureScope: featureScope)
         sut = WatchdogTerminationAppStateManager(
             dataStore: dataStore,
-            vendorIdProvider: VendorIdProviderMock(),
             featureScope: featureScope,
-            sysctl: Sysctl()
+            sysctl: Sysctl(),
+            vendorIdProvider: VendorIdProviderMock()
         )
         core = PassthroughCoreMock(
             context: .mockWith(applicationStateHistory: .mockAppInBackground()),

@@ -74,9 +74,9 @@ final class WatchdogTerminationMonitorTests: XCTestCase {
 
         let appStateManager = WatchdogTerminationAppStateManager(
             dataStore: dataStore,
-            vendorIdProvider: vendorIdProvider,
             featureScope: featureScope,
-            sysctl: sysctl
+            sysctl: sysctl,
+            vendorIdProvider: vendorIdProvider
         )
 
         let checker = WatchdogTerminationChecker(appStateManager: appStateManager, deviceInfo: deviceInfo)
@@ -84,8 +84,8 @@ final class WatchdogTerminationMonitorTests: XCTestCase {
         let reporter = WatchdogTerminationReporterMock(didSend: didSend)
 
         sut = WatchdogTerminationMonitor(
-            checker: checker,
             appStateManager: appStateManager,
+            checker: checker,
             reporter: reporter,
             telemetry: featureScope.telemetryMock
         )

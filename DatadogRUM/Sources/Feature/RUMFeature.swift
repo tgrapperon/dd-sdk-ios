@@ -85,16 +85,16 @@ internal final class RUMFeature: DatadogRemoteFeature {
 
         let appStateManager = WatchdogTerminationAppStateManager(
             dataStore: .init(featureScope: featureScope),
-            vendorIdProvider: UIDevice(),
             featureScope: featureScope,
-            sysctl: Sysctl()
+            sysctl: Sysctl(),
+            vendorIdProvider: UIDevice()
         )
         let watchdogTermination = WatchdogTerminationMonitor(
+            appStateManager: appStateManager,
             checker: .init(
                 appStateManager: appStateManager,
                 deviceInfo: .init()
             ),
-            appStateManager: appStateManager,
             reporter: WatchdogTerminationReporter(),
             telemetry: featureScope.telemetry
         )

@@ -90,9 +90,9 @@ extension WatchdogTerminationAppStateManager: RandomMockable {
     public static func mockRandom() -> WatchdogTerminationAppStateManager {
         return .init(
             dataStore: .mockRandom(),
-            vendorIdProvider: VendorIdProviderMock(),
             featureScope: FeatureScopeMock(),
-            sysctl: Sysctl.mockRandom()
+            sysctl: Sysctl.mockRandom(),
+            vendorIdProvider: VendorIdProviderMock()
         )
     }
 }
@@ -112,8 +112,8 @@ extension RUMDataStore: RandomMockable {
 extension WatchdogTerminationMonitor: RandomMockable {
     public static func mockRandom() -> WatchdogTerminationMonitor {
         return .init(
-            checker: .mockRandom(),
             appStateManager: .mockRandom(),
+            checker: .mockRandom(),
             reporter: WatchdogTerminationReporter.mockRandom(),
             telemetry: NOPTelemetry()
         )

@@ -13,6 +13,8 @@
 		1434A4642B7F73170072E3BB /* OpenTelemetryApi.xcframework in ⚙️ Embed Framework Dependencies */ = {isa = PBXBuildFile; fileRef = 3C1F88222B767CE200821579 /* OpenTelemetryApi.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1434A4662B7F8D880072E3BB /* DebugOTelTracingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1434A4652B7F8D880072E3BB /* DebugOTelTracingViewController.swift */; };
 		1434A4672B7F8D880072E3BB /* DebugOTelTracingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1434A4652B7F8D880072E3BB /* DebugOTelTracingViewController.swift */; };
+		3C0CB3452C19A1ED003B0E9B /* WatchdogTerminationReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CB3442C19A1ED003B0E9B /* WatchdogTerminationReporter.swift */; };
+		3C0CB3462C19A1ED003B0E9B /* WatchdogTerminationReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0CB3442C19A1ED003B0E9B /* WatchdogTerminationReporter.swift */; };
 		3C0D5DD72A543B3B00446CF9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0D5DD62A543B3B00446CF9 /* Event.swift */; };
 		3C0D5DD82A543B3B00446CF9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0D5DD62A543B3B00446CF9 /* Event.swift */; };
 		3C0D5DE22A543DC400446CF9 /* EventGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0D5DDF2A543DAE00446CF9 /* EventGeneratorTests.swift */; };
@@ -109,8 +111,6 @@
 		3CFF4F892C09E5FA006F191D /* VendorIdProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F872C09E5FA006F191D /* VendorIdProvider.swift */; };
 		3CFF4F8B2C09E61A006F191D /* WatchdogTerminationAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F8A2C09E61A006F191D /* WatchdogTerminationAppState.swift */; };
 		3CFF4F8C2C09E61A006F191D /* WatchdogTerminationAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F8A2C09E61A006F191D /* WatchdogTerminationAppState.swift */; };
-		3CFF4F8E2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F8D2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift */; };
-		3CFF4F8F2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F8D2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift */; };
 		3CFF4F912C09E630006F191D /* WatchdogTerminationAppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F902C09E630006F191D /* WatchdogTerminationAppStateManager.swift */; };
 		3CFF4F922C09E630006F191D /* WatchdogTerminationAppStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F902C09E630006F191D /* WatchdogTerminationAppStateManager.swift */; };
 		3CFF4F942C09E63C006F191D /* WatchdogTerminationChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFF4F932C09E63C006F191D /* WatchdogTerminationChecker.swift */; };
@@ -2087,6 +2087,7 @@
 
 /* Begin PBXFileReference section */
 		1434A4652B7F8D880072E3BB /* DebugOTelTracingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOTelTracingViewController.swift; sourceTree = "<group>"; };
+		3C0CB3442C19A1ED003B0E9B /* WatchdogTerminationReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTerminationReporter.swift; sourceTree = "<group>"; };
 		3C0D5DD62A543B3B00446CF9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3C0D5DDC2A543D5D00446CF9 /* EventGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventGenerator.swift; sourceTree = "<group>"; };
 		3C0D5DDF2A543DAE00446CF9 /* EventGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventGeneratorTests.swift; sourceTree = "<group>"; };
@@ -2132,7 +2133,6 @@
 		3CF673352B4807490016CE17 /* OTelSpanTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTelSpanTests.swift; sourceTree = "<group>"; };
 		3CFF4F872C09E5FA006F191D /* VendorIdProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorIdProvider.swift; sourceTree = "<group>"; };
 		3CFF4F8A2C09E61A006F191D /* WatchdogTerminationAppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTerminationAppState.swift; sourceTree = "<group>"; };
-		3CFF4F8D2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTerminationAppStateDataStore.swift; sourceTree = "<group>"; };
 		3CFF4F902C09E630006F191D /* WatchdogTerminationAppStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTerminationAppStateManager.swift; sourceTree = "<group>"; };
 		3CFF4F932C09E63C006F191D /* WatchdogTerminationChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTerminationChecker.swift; sourceTree = "<group>"; };
 		3CFF4F962C09E64C006F191D /* WatchdogTerminationMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogTerminationMonitor.swift; sourceTree = "<group>"; };
@@ -3401,10 +3401,10 @@
 			children = (
 				3CFF4F872C09E5FA006F191D /* VendorIdProvider.swift */,
 				3CFF4F8A2C09E61A006F191D /* WatchdogTerminationAppState.swift */,
-				3CFF4F8D2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift */,
 				3CFF4F902C09E630006F191D /* WatchdogTerminationAppStateManager.swift */,
 				3CFF4F932C09E63C006F191D /* WatchdogTerminationChecker.swift */,
 				3CFF4F962C09E64C006F191D /* WatchdogTerminationMonitor.swift */,
+				3C0CB3442C19A1ED003B0E9B /* WatchdogTerminationReporter.swift */,
 			);
 			path = WatchdogTerminations;
 			sourceTree = "<group>";
@@ -8698,7 +8698,6 @@
 				3CFF4F922C09E630006F191D /* WatchdogTerminationAppStateManager.swift in Sources */,
 				D23F8E6529DDCD28001CFAE8 /* RUMFeature.swift in Sources */,
 				D23F8E6629DDCD28001CFAE8 /* RUMDebugging.swift in Sources */,
-				3CFF4F8F2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift in Sources */,
 				D23F8E6729DDCD28001CFAE8 /* RUMUUID.swift in Sources */,
 				D23F8E6829DDCD28001CFAE8 /* UIKitExtensions.swift in Sources */,
 				61C713A82A3B78F900FA735A /* RUMMonitorProtocol+Convenience.swift in Sources */,
@@ -8710,6 +8709,7 @@
 				49D8C0B82AC5D2160075E427 /* RUM+Internal.swift in Sources */,
 				D23F8E6E29DDCD28001CFAE8 /* RUMViewsHandler.swift in Sources */,
 				61C713BA2A3C935C00FA735A /* RUM.swift in Sources */,
+				3C0CB3462C19A1ED003B0E9B /* WatchdogTerminationReporter.swift in Sources */,
 				D23F8E6F29DDCD28001CFAE8 /* RequestBuilder.swift in Sources */,
 				D224430529E9588500274EC7 /* TelemetryReceiver.swift in Sources */,
 				D23F8E7029DDCD28001CFAE8 /* URLSessionRUMResourcesHandler.swift in Sources */,
@@ -9031,7 +9031,6 @@
 				3CFF4F912C09E630006F191D /* WatchdogTerminationAppStateManager.swift in Sources */,
 				D29A9F7429DD85BB005C54A4 /* RUMFeature.swift in Sources */,
 				D29A9F7729DD85BB005C54A4 /* RUMDebugging.swift in Sources */,
-				3CFF4F8E2C09E626006F191D /* WatchdogTerminationAppStateDataStore.swift in Sources */,
 				D29A9F6E29DD85BB005C54A4 /* RUMUUID.swift in Sources */,
 				D29A9F8D29DD8665005C54A4 /* UIKitExtensions.swift in Sources */,
 				61C713A72A3B78F900FA735A /* RUMMonitorProtocol+Convenience.swift in Sources */,
@@ -9043,6 +9042,7 @@
 				49D8C0B72AC5D2160075E427 /* RUM+Internal.swift in Sources */,
 				D29A9F7629DD85BB005C54A4 /* RUMViewsHandler.swift in Sources */,
 				61C713B92A3C935C00FA735A /* RUM.swift in Sources */,
+				3C0CB3452C19A1ED003B0E9B /* WatchdogTerminationReporter.swift in Sources */,
 				D29A9F7929DD85BB005C54A4 /* RequestBuilder.swift in Sources */,
 				D224430429E9588100274EC7 /* TelemetryReceiver.swift in Sources */,
 				D29A9F5729DD85BB005C54A4 /* URLSessionRUMResourcesHandler.swift in Sources */,

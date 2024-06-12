@@ -12,7 +12,10 @@ internal struct LaunchReportReceiver: FeatureMessageReceiver {
     let featureScope: FeatureScope
     let watchdogTermination: WatchdogTerminationMonitor?
 
-    init(featureScope: FeatureScope, watchdogTermination: WatchdogTerminationMonitor?) {
+    init(
+        featureScope: FeatureScope,
+        watchdogTermination: WatchdogTerminationMonitor?
+    ) {
         self.featureScope = featureScope
         self.watchdogTermination = watchdogTermination
     }

@@ -11,6 +11,9 @@ import DatadogInternal
 import UIKit
 #endif
 
+/// Checks if the app was terminated by Watchdog using heuristics.
+/// It uses the app state information from the last app session and the current app session
+/// to determine if the app was terminated by Watchdog.
 internal final class WatchdogTerminationChecker {
     let appStateManager: WatchdogTerminationAppStateManager
     let deviceInfo: DeviceInfo

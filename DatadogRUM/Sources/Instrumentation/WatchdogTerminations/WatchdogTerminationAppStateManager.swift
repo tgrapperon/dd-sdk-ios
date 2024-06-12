@@ -21,9 +21,9 @@ internal final class WatchdogTerminationAppStateManager {
 
     init(
         dataStore: RUMDataStore,
-        vendorIdProvider: VendorIdProvider,
         featureScope: FeatureScope,
-        sysctl: SysctlProviding
+        sysctl: SysctlProviding,
+        vendorIdProvider: VendorIdProvider
     ) {
         self.dataStore = dataStore
         self.vendorIdProvider = vendorIdProvider
@@ -32,18 +32,29 @@ internal final class WatchdogTerminationAppStateManager {
         self.isActive = false
     }
 
+    /// Starts the app state monitoring. Depending on the app state changes, it updates the app state in the data store.
+    /// For example, when the app goes to the background, the app state is updated with `isActive = false`.`
     func start() throws {
         DD.logger.debug("Start app state monitoring")
         isActive = true
         try storeCurrentAppState()
     }
 
+    /// Stops the app state monitoring.
     func stop() throws {
         DD.logger.debug("Stop app state monitoring")
         isActive = false
     }
 
-    func updateAppState(block: @escaping (inout WatchdogTerminationAppState?) -> Void) {
+    /// Deletes the app state from the data store.
+    func deleteAppState() {
+        DD.logger.debug("Deleting app state from data store")
+        dataStore.removeValue(forKey: .watchdogAppStateKey)
+    }
+
+    /// Updates the app state in the data store with the given block.
+    /// - Parameter block: The block to update the app state.
+    private func updateAppState(block: @escaping (inout WatchdogTerminationAppState?) -> Void) {
         dataStore.value(forKey: .watchdogAppStateKey) { (appState: WatchdogTerminationAppState?) in
             var appState = appState
             block(&appState)
@@ -52,17 +63,15 @@ internal final class WatchdogTerminationAppStateManager {
         }
     }
 
-    func storeCurrentAppState() throws {
+    /// Builds the current app state and stores it in the data store.
+    private func storeCurrentAppState() throws {
         try currentAppState { [self] appState in
             dataStore.setValue(appState, forKey: .watchdogAppStateKey)
         }
     }
 
-    func deleteAppState() {
-        DD.logger.debug("Deleting app state from data store")
-        dataStore.removeValue(forKey: .watchdogAppStateKey)
-    }
-
+    /// Reads the app state from the data store asynchronously.
+    /// - Parameter completion: The completion block called with the app state.
     func readAppState(completion: @escaping (WatchdogTerminationAppState?) -> Void) {
         dataStore.value(forKey: .watchdogAppStateKey) { (state: WatchdogTerminationAppState?) in
             DD.logger.debug("Reading app state from data store.")
@@ -70,6 +79,8 @@ internal final class WatchdogTerminationAppStateManager {
         }
     }
 
+    /// Builds the current app state asynchronously.
+    /// - Parameter completion: The completion block called with the app state.
     func currentAppState(completion: @escaping (WatchdogTerminationAppState) -> Void) throws {
         let systemBootTime = try sysctl.systemBootTime()
         let osVersion = try sysctl.osVersion()
@@ -91,6 +102,13 @@ internal final class WatchdogTerminationAppStateManager {
 }
 
 extension WatchdogTerminationAppStateManager: FeatureMessageReceiver {
+    /// Receives the feature message and updates the app state based on the context message.
+    /// It relies on `ApplicationStatePublisher` context message to update the app state.
+    /// Other messages are ignored.
+    /// - Parameters:
+    ///   - message: The feature message.
+    ///   - core: The core instance.
+    /// - Returns: Always `false`, because it doesn't block the message propagation.
     func receive(message: DatadogInternal.FeatureMessage, from core: any DatadogInternal.DatadogCoreProtocol) -> Bool {
         guard isActive else {
             return false
@@ -101,6 +119,9 @@ extension WatchdogTerminationAppStateManager: FeatureMessageReceiver {
             break
         case .context(let context):
             let state = context.applicationStateHistory.currentSnapshot.state
+
+            // the message received on multiple times whenever there is change in context
+            // but it may not be the application state, hence we guard against the same state
             guard state != lastAppState else {
                 return false
             }

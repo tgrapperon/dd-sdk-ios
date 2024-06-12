@@ -7,20 +7,6 @@
 import Foundation
 import DatadogInternal
 
-#if canImport(UIKit)
-import UIKit
-#endif
-
-internal protocol WatchdogTerminationReporting {
-    func send()
-}
-
-internal final class WatchdogTerminationReporter: WatchdogTerminationReporting {
-    func send() {
-        DD.logger.error("TODO: WatchdogTerminationReporter.report()")
-    }
-}
-
 /// Monitors the Watchdog Termination events and reports them to Datadog.
 internal final class WatchdogTerminationMonitor {
     enum ErrorMessages {
@@ -37,8 +23,8 @@ internal final class WatchdogTerminationMonitor {
     let reporter: WatchdogTerminationReporting
 
     init(
-        checker: WatchdogTerminationChecker,
         appStateManager: WatchdogTerminationAppStateManager,
+        checker: WatchdogTerminationChecker,
         reporter: WatchdogTerminationReporting,
         telemetry: Telemetry
     ) {
@@ -63,6 +49,8 @@ internal final class WatchdogTerminationMonitor {
         }
     }
 
+    /// Checks if the app was terminated by Watchdog and sends the Watchdog Termination event to Datadog.
+    /// - Parameter launch: The launch report containing information about the app launch.
     private func sendWatchTerminationIfFound(launch: LaunchReport) {
         do {
             try checker.isWatchdogTermination(launch: launch) { isWatchdogTermination in
@@ -91,6 +79,9 @@ internal final class WatchdogTerminationMonitor {
 }
 
 extension WatchdogTerminationMonitor: Flushable {
+    /// Flushes the Watchdog Termination Monitor. It stops the monitor and deletes the app state.
+    /// - Note: This method must be called manually only or in the tests.
+    /// This will reset the app state and the monitor will not able to detect Watchdog Termination due to absence of the previous app state.
     func flush() {
         stop()
         appStateManager.deleteAppState()
