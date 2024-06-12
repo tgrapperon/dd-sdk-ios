@@ -82,6 +82,9 @@ internal struct MessageBusSender: CrashReportSender {
             return
         }
 
+        // We use baggage message to pass the launch report instead updating the global context
+        // because under the hood, some integrations start certain features based on the launch report (e.g. `WatchdogTerminationMonitor`).
+        // If we update the global context, the integrations will keep starting the features on every update which is not desired.
         core.send(
             message: .baggage(
                 key: LaunchReport.messageKey,
