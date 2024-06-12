@@ -75,11 +75,13 @@ public struct Sysctl {
         #endif
     }
 
+    /// Returns the operating system version as a human-readable string.
     /// e.g. "15D21" or "13D20"
     public static func osVersion() throws -> String {
         try Sysctl.string(for: [CTL_KERN, KERN_OSVERSION])
     }
 
+    /// Returns the system uptime in seconds.
     public static func systemBootTime() throws -> TimeInterval {
         let bootTime = try Sysctl.data(for: [CTL_KERN, KERN_BOOTTIME])
         let uptime = bootTime.withUnsafeBufferPointer { buffer -> timeval? in
@@ -91,6 +93,7 @@ public struct Sysctl {
         return TimeInterval(uptime.tv_sec)
     }
 
+    /// Returns `true` if the debugger is attached to the current process.
     /// https://developer.apple.com/library/archive/qa/qa1361/_index.html
     public static func isDebugging() throws -> Bool {
         var info = kinfo_proc()
