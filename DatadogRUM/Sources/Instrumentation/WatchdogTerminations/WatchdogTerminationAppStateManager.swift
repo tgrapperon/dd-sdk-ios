@@ -9,40 +9,38 @@ import DatadogInternal
 
 /// Manages the app state changes observed during application lifecycle events such as application start, resume and termination.
 internal final class WatchdogTerminationAppStateManager {
-    static let appStateKey = "app-state"
-
-    let notificationCenter: NotificationCenter
     var vendorIdProvider: VendorIdProvider
     let dataStore: RUMDataStore
     let featureScope: FeatureScope
     let sysctl: SysctlProviding
+
+    @ReadWriteLock
     var lastAppState: AppState?
-    var isWeatching: Bool
+    @ReadWriteLock
+    var isActive: Bool
 
     init(
         dataStore: RUMDataStore,
         vendorIdProvider: VendorIdProvider,
         featureScope: FeatureScope,
-        sysctl: SysctlProviding,
-        notificationCenter: NotificationCenter = .default
+        sysctl: SysctlProviding
     ) {
         self.dataStore = dataStore
-        self.notificationCenter = notificationCenter
         self.vendorIdProvider = vendorIdProvider
         self.featureScope = featureScope
         self.sysctl = sysctl
-        self.isWeatching = false
+        self.isActive = false
     }
 
     func start() throws {
         DD.logger.debug("Start app state monitoring")
-        isWeatching = true
+        isActive = true
         try storeCurrentAppState()
     }
 
     func stop() throws {
         DD.logger.debug("Stop app state monitoring")
-        isWeatching = false
+        isActive = false
     }
 
     func updateAppState(block: @escaping (inout WatchdogTerminationAppState?) -> Void) {
@@ -94,7 +92,7 @@ internal final class WatchdogTerminationAppStateManager {
 
 extension WatchdogTerminationAppStateManager: FeatureMessageReceiver {
     func receive(message: DatadogInternal.FeatureMessage, from core: any DatadogInternal.DatadogCoreProtocol) -> Bool {
-        guard isWeatching else {
+        guard isActive else {
             return false
         }
 
